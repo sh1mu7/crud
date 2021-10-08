@@ -1,0 +1,76 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-4">
+            <h4 class="alert-info text-center">Add Content</h4>
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="Name">Name</label>
+                    <input name="name" type="text" class="form-control" id="Name"
+                           placeholder="Enter name">
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input name="email" type="email" class="form-control" id="exampleInputEmail1"
+                           aria-describedby="emailHelp"
+                           placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                        else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password</label>
+                    <input name="password" type="password" class="form-control" id="Password"
+                           placeholder="Enter Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-8">
+            <h4 class="alert-primary text-center">Show Table Data</h4>
+            {% if information %}
+                <table class="table text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Action</th>
+
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for info in information %}
+                        <tr>
+                            <th scope="row">{{ info.id }}</th>
+                            <td>{{ info.name }}</td>
+                            <td>{{ info.email }}</td>
+                            <td>{{ info.password }}</td>
+                            <td>
+
+                                    <a href=" {% url 'base:update' info.id %} "
+                                       class="btn btn-outline-warning btn-sm">Edit</a>
+                                    <form method="post" action="{% url 'base:delete' info.id %}" class="d-inline" >
+                                        {% csrf_token %}
+                                        <input type="submit" class="btn btn-outline-danger btn-sm" value="Delete">
+                                    </form>
+
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            {% else %}
+                <h4>No Record Found</h4>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
